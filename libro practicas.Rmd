@@ -1,0 +1,922 @@
+---
+title: "Texto instructivo R"
+output:
+  word_document: default
+  pdf_document: default
+  html_notebook: default
+  html_document:
+    df_print: paged
+---
+
+## Preparación para programar en R
+
+tener instalado [R](https://cran.r-project.org/bin/windows/base/), [Rstudio](https://www.rstudio.com/products/rstudio/download/) y [Rtools](https://cran.r-project.org/bin/windows/Rtools/rtools40.html) en sus ultimas versiones disponibles. 
+Es recomendable tener 8 GB de RAM disponibles en el equipo para una ejecución optima de las funciones de los programas diseñados
+
+## Usos Basicos de R
+\
+R es un lenguaje de programación de alto nivel que sirve para realizar operaciones matematicas y estadisticas, modelos, graficas, organización de datos, etc. Para comenzar R puede ser usado como una calculadora sencilla.
+
+```{r eje calc}
+# Ejemplo de calculadora
+
+5+5
+
+300*525
+```
+## Principales objetos en R
+
+### Vector unico
+
+R es un lenguaje orientado a objetos, por lo tanto tiene multiples formas de tratar y almacenar los datos. El más sencillo son los vectores de un unico dato. Estas se pueden usar para almacenar distintos tipos de datos (numeros, palabras, fechas, etc.). Su principal funcion esta en almacenar datos de uso repetitivo y los resultados de las operaciones, por ejemplo:
+
+```{r def var}
+# Una variable se define con una letra o conjunto de ellas seguidas de -> ó = y el valor que se le asigna
+
+x = 5
+
+#Para conocer el contenido de una variable en R solo se necesita ejecutar la variable directamente en el script o consola
+x
+
+#Podemos usar la variable para ejecutar operaciones y almacenarla en una variable distinta
+
+y = (10+x)*x
+
+y
+
+```
+
+
+### Vectores de lista
+
+Los vectores de lista o más comunmente referidos como vectores, son arreglos que permiten almacenar grandes catidades de datos de un unico tipo y de una sola dimensión. Los vectores son la estructura principal de objetos más complejos y son la base de multiples paquetes de funciones disponibles en R.
+
+```{r def vector}
+# Para definir un vector se usa la letra c acompañada de parentesis en el cual se insertan los datos separados por "," de la siguiente manera c(d1, d2, d3, ... dn)
+
+x = c(1,2,3,4,5)
+x
+
+# Asi mismo los vectores permiten operaciones matematicas tales como suma, multiplicacion, division, entre otros. El resultado de operación matematica de este tipo ejecutará la operacion y devolvera un vector del mismo tamaño con el resultado de la operación.
+
+x*5
+
+# Tambien se pueden realizar operaciones entre vectores, sin embargo esto requiere que los vectores tengan la misma longitud de datos y sean del mismo tipo
+
+y = c(2,2,2,2,2)
+x*y
+```
+Los vectores tambien pueden ser usados para crear secuencias a través de funciones incluidas por defecto en R como en el siguiente ejemplo:
+
+```{r secuencias}
+# Para crear una secuencia basica de un numero inicial a otro final con un conteo de 1 paso solo se necesita ":"
+
+1:10
+
+# Este tipo de secuencias se usa principalemente para recorrer arreglos y vectores. Para acceder al contenido de un vector se usa [n] y la posicion que se desea empezando desde 1. 
+
+x[1:3]
+
+# Para obtener secuencias más complejas podemos usar la funcion seq() incluida de base en R
+
+#secuencia basica
+seq(1,20)
+
+#secuencia con paso definido 
+seq(1,20, by = 2)
+
+#secuencia con longitud de datos definida
+
+seq(1,20, length = 5)
+```
+
+
+### Matrices
+
+Las matrices son arreglos de 2 dimensiones compuesto por vectores. Asi como los vectores, las matrices solamente pueden contener un tipo de datos unico al tiempo. Su principal uso se encuentra en realizar operaciones matriciales propias del algebra lineal como la multiplicacion matricial. 
+
+```{r matrices}
+#Para declarar una matriz se usa la funcion matrix(d, nrow, ncol), la forma más sencilla de crear una matriz es usar un vector. La matriz se llenara con los datos que se le den hasta el maximo posible de la capacidad especificada, si le sobra espacio repetira nuevamente el vector si le faltan llenará hasta donde tenga capacidad.
+
+#declaracion simple 
+m = matrix(1:10, nrow = 10, ncol = 10)
+m
+#Las matrices tambien pueden crearse apartir de dos vectores existentes usando las funciones cbind() o rbind()
+
+#Unión por columnas
+cbind(x,y)
+#Unión por filas  
+rbind(x,y)
+
+#Para acceder a valor presente en una matrix se usa [x,y] con las coordenadas deseadas siendo "x" filas y "y" columnas
+
+m[3,2]
+```
+
+
+Para realizar operaciones matematicas sobre matrices se aplican las mismas reglas que a los vectores para operaciones de suma, resta, multiplicación, división, entre otras. Sin embargo tambien se tiene a disposicion algunas operaciones especiales como el producto matricial con el operador %*% y trasponer la matriz con la funcion t()
+
+```{r operaciones de matrices}
+#Multiplicacion con un escalar
+w = cbind(x,y)
+w*4
+
+#producto matricial
+
+z = rbind(x,y)
+w%*%z
+
+#matriz traspuesta
+
+t(w)
+
+
+```
+En la siguiente imagen se puede apreciar un listado de las operaciones especiales con matrices.
+![Funciones de matrices](C:\Users\pipep\OneDrive\Pictures\funciones matrices.PNG)
+
+
+Las matrices tambien tiene un uso importante al momento de utilizar ciertas funciones que se veran más adelante como matrices de correlaciones o creación de series de tiempo. 
+
+### DataFrames
+
+Los dataframes son los objetos más usados en R. Tienen la misma estructura de las matrices pero permite tener distintos tipos de datos aunque un unico tipo por columna. Su principal uso esta en almacenar bases de datos organizando filas como observaciones y columnas como variables.
+
+Para crear un dataframe se usa la funcion data.frame(d1,d2,d3,dn...), todos los elementos presentes deberán tener la misma longitud.
+
+```{r crear dataframe}
+#creacion de un dataframe
+
+df = data.frame(v1 = 26:30,v2 = seq(0,100, length = 5),v3 = x,v4 = y, 
+                v5 = c("a", "b", "c", "d", "e"))
+df
+
+#Para obtener datos de un dataframe podemos usar [x,y] ó el simbolo "$" seguido del nombre de la columna para obtener toda la columna o espefico con la posicion en la columna con []
+
+#obtener segunda columna 
+
+df[,2]
+df$v2
+
+#obtener primer dato segunda columna 
+
+df[1,2]
+df$v2[1]
+
+
+```
+
+
+
+### Listas
+
+Las listas son objetos de datos que permiten diferentes tipos de datos y objetos al mismo tiempo. Su principal uso se encuentra al almacenar caracteristicas, resultados y datos relacionados entre si de un determinado objeto. Los elementos dentro de una lista no necesitan tener la misma longitud entre ellos. Son objetos de una sola dimensión pero sus datos pueden estar anidados.
+
+Para crear una lista usamos la funcion list(d1, d2, ..., dn).
+
+```{r crear listas}
+#creacion de una lista
+list(df, w, x, y, "a")
+
+
+```
+
+## Funciones
+
+Las funciones son herramientas diseñadas para automatizar y realizar funciones repetitivas en un programa. Debido a que R es un lenguaje enfocado en la estadistica tiene una gran cantidad de funciones pre definidas como el promedio para aplicar a los datos. Sin embargo es posible crear nuestras propias funciones que se adapten a las necesidades del trabajo en proceso.
+
+Para crear funciones se requiere de la siguiente estructura nombre = function(parametros){Codigo a ejecutar} y deben ser declaradas antes de ser llamadas. A continuacion se plantea la creacion y el funcionamiento de una funcion en R
+
+```{r crear funciones}
+#funcion sin parametros
+f1 = function(){
+  print("hola mundo")
+}
+
+f1()
+
+#funcion con parametros
+
+f2 = function(string){
+  print(string)
+}
+
+f2("imprime este texto")
+#funcion con retorno
+
+f3 = function(num){
+  n= num*2
+  return(n)
+}
+
+n = f3(5)
+n
+```
+
+Para entender la utilidad de las funciones en el siguiente ejemplo se enseña como crear una funcion sencilla de promedio recibiendo un vector como parametro.
+
+```{r funcion promedio}
+promedio = function(vector){
+  prom = sum(vector)/length(vector)
+  return(prom)
+}
+
+promedio(x)
+
+```
+
+
+### Funciones pre-construidas en R
+
+R fue diseñado como un lenguaje estadistico y para el analisis de datos. Por tanto tiene multiples funciones pre construidas directamente en el programa.
+
+
+![**FUNCIONES NUMERICAS**](C:\Users\pipep\OneDrive\Pictures\f1 r.PNG)
+
+
+![**FUNCIONES PROBABILISTICAS**](C:\Users\pipep\OneDrive\Pictures\f2 r.PNG)
+
+
+![**FUNCIONES ESTADISTICAS**](C:\Users\pipep\OneDrive\Pictures\f3 r.PNG)
+
+
+![**FUNCIONES UTILES**](C:\Users\pipep\OneDrive\Pictures\f4 r.PNG)
+
+
+## Aplicaciones financieras
+
+### Valoracion de activos (Bonos)
+
+Para realizar valoracion de bonos usando R se puede hacer uso de las herramientas para crear funciones en R. Esto nos permitira automatizar las operaciones repetitivas del calculo.
+
+```{r librerias inversiones, message=FALSE, warning=FALSE, results="hide"}
+#librerias necesarias
+library(fOptions)
+library(fitdistrplus)
+library(logspline)
+library(fitur)
+library(actuar)
+library(tidyverse)
+library(broom)
+library(lubridate)
+library(PortfolioAnalytics)
+library(tidyquant)
+library(timetk)
+
+```
+
+
+```{r creacion de funciones de bonos}
+#funcion para valorar un Bono
+Bond_value = function(vn, ti, tv ,tf, tc, yield, period){
+#vn = valor nominal
+#ti = fecha inicio del bono
+#tv = fecha de valoracion
+#tf = fecha de vencimiento del bono
+#tc = tasa cupon
+#y = yield o rendimiento
+#period = periodicidad de pago en meses (1 año = 12, 1 semestre = 6)
+  
+#transformamos la periodicidad y fechas a formato de fecha
+  period = months(period)
+  ti = as_date(ti)
+  tv = as_date(tv)
+  tf = as_date(tf)
+#calculamos el numero de periodos entre la fecha de inicio y al fecha final    
+npays = interval(ti,tf)/period
+#creamos un Dataframe de los flujos con 3 columnas: 
+#numero del periodo, fecha del pago y valor del pago 
+flujos = tibble(n = 1:npays, fecha = ti+n*period,pagos = tc*vn) %>% 
+#añadimos una fila al inicio con la fecha inicial y el valor nominal negativo (momento de adquisicion del bono)
+          add_row(n = 0, fecha = ti, pagos = -vn, .before = 1 ) 
+#añadimos el pago del principal al ultimo pago
+flujos$pagos[npays+1] = flujos$pagos[npays+1]+vn
+
+#filtramos los flujos para pagos despues de la fecha de valoración
+precio = flujos %>% filter(fecha > tv) %>%  
+#añadimos dos columnas:
+#intervalos de días entre fecha de valoracion y n periodo de pago 
+#valor presente de los pagos
+ mutate(dias = interval(tv, fecha)/period, 
+          vp = (pagos/(1+yield)**(dias))) 
+
+#añadimos el cupon resagado
+cupon_resagado = (1-precio$dias[1])*tc*vn
+#sumamos los valores presentes de los flujos del bono
+precio_final = sum(precio$vp-cupon_resagado)
+#devolvemos el resultado en la variable precio_b
+return(precio_final)  
+}  
+vn = 100 
+ti = as_date("2015-06-24")
+tv = as_date("2018-03-15")
+tf = as_date("2020-06-24")
+tc = 0.08 
+y = 0.08
+period = 6
+
+precio = Bond_value(vn,ti,tv,tf,tc,y, period)
+precio
+  
+
+```
+
+### Optimizacion de portafolios
+
+Para realizar optimizaciones de portafolios se puede hacer uso del paquete Portfolio Analytics. 
+Este paquete tiene incluidas funciones para organizar los activos y optimizadores para determinar la mejor combinacion de activos.
+
+```{r optimizacion de portafolios, message=FALSE, warning=FALSE}
+
+#Descargamos los tickers de las empresas que conforman el DJIA
+tickers = tq_index("DOW")$symbol
+#Bajamos la data de las acciones 
+stocks = tq_get(tickers, from = "2020-01-01")
+
+stocks
+#seleccionamos las columnas de fecha, el ticker y el precio de cierre ajustado
+stocks = stocks %>% select(date, symbol, adjusted) %>% group_by(symbol) %>%
+#Calculamos los rendimientos diarios y eliminamos NA de la base de datos
+  tq_transmute(mutate_fun = ROC, adjusted, col_rename = "Returns") %>% na.omit() 
+#separamos los rendimientos de las acciones cada una por columna y la damos forma de serie de tiempo
+time_series = stocks %>% pivot_wider(names_from = symbol, values_from = Returns) %>% tk_xts() 
+
+
+#creacion de portafolio (solo los tickers)
+portfolio = portfolio.spec(assets = tickers)
+#asignacion de restricciones portafolio solo long y todo el capital
+portfolio = add.constraint(portfolio, type = "full_investment")
+portfolio = add.constraint(portfolio, type = "long_only")
+#optimizacion portafolio de minima varianza
+portfolio = add.objective(portfolio = portfolio, type = "risk", name = "var")
+min_var = optimize.portfolio(R = time_series, portfolio = portfolio, 
+                             optimize_method = "ROI")
+#resultado
+min_var
+#pesos optimizados
+pesos = tibble(tickers = names(min_var$weights), pesos = min_var$weights)
+
+#creacion del portafolio 
+port_returns = tq_portfolio(data = stocks,assets_col = symbol, returns_col = Returns, 
+             weights = pesos, col_rename =  "Returns")
+
+port_returns %>%
+    ggplot(aes(x = date, y = Returns)) +
+    geom_line() +
+    labs(title = "Grafica portafolio minima varianza", 
+         y = "Closing Price", x = "") + 
+    theme_tq()
+
+```
+
+
+### Valoracion de opciones 
+
+#### Modelo de Black and Scholes
+
+Para valorar opciones usando el modelo de black and scholes disponemos del paquete especializado fOptions. 
+
+```{r opciones b&s}
+
+#Parametros
+Spot = 42
+Ejercicio = 40
+rf = 0.1 #10% anual
+t = 1/2
+vol = 0.2
+
+#Funcion BS para call
+GBSOption(TypeFlag = "c", S = Spot, X = Ejercicio, Time = t, r = rf, b = rf, sigma = vol)@price
+
+#Funcion BS para put
+
+GBSOption(TypeFlag = "p", S = Spot, X = Ejercicio, Time = t, r = rf, b = rf, sigma = vol)@price
+
+
+```
+
+#### Arbol binomial 
+
+Valoracion de opciones americanas y europeas usando el modelo de arbol binomial 
+
+```{r binomial tree}
+# Iniciamos el modelo creando una funcion que permita hacer el arbol binomial con el precio de las acciones
+Arbol <- function(S, sigma, delta_t, N) {
+#creamos una matriz para almacenar los datos usando el numero de nodos +1 que queremos para que tenga espacio  
+  tree = matrix(0, nrow=N+1, ncol=N+1)
+#Hallamos U y D para hallar los cambios de los precios en cada paso.
+  U = exp(sigma*sqrt(delta_t))
+  D = exp(-sigma*sqrt(delta_t))
+#Recorremos la matriz con un ciclo for para asignar el valor de cada cambio de precio de la accion
+  for (i in 1:(N+1)) {
+    for (j in 1:i) {
+      tree[i, j] = S * U^(j-1) * D^((i-1)-(j-1))
+    }  }
+  return(tree)
+}
+
+#funcion para calcular la probabilidad q
+q_prob <- function(r, delta_t, sigma) {
+  u = exp(sigma*sqrt(delta_t))
+  d = exp(-sigma*sqrt(delta_t))
+  return((exp(r*delta_t) - d)/(u-d))
+}
+
+#funcion para realizar el arbol de valores de opciones 
+value_binomial_option <- function(tree, sigma, delta_t, r, X, type) {
+  #calculamos la probabilidad q
+  q = q_prob(r, delta_t, sigma)
+  #Definimos la matriz para almacenar los valores de las opciones
+  option_tree = matrix(0, nrow=nrow(tree), ncol=ncol(tree))
+  #creamos un condicional si para definir si es una opcion put o call
+  if(type == 'put') {
+    #Funcion de valor de las opciones put
+    option_tree[nrow(option_tree),] = pmax(X - tree[nrow(tree),], 0)
+    #funcion de valor de las opciones call
+  } else if(type == 'call') {  option_tree[nrow(option_tree),] = pmax(tree[nrow(tree),] - X, 0)
+  }
+  
+  #valoracion de la opcion
+  for (i in (nrow(tree)-1):1) {
+    for(j in 1:i) {
+      option_tree[i,j]=((1-q)*option_tree[i+1,j] + q*option_tree[i+1,j+1])/exp(r*delta_t)
+    }
+  }
+  return(option_tree)
+}
+
+#Funcion para copilar todas las funciones previas en una unica funcion
+binomial_option <- function(type, sigma, T, r, X, S, N) {
+  q <- q_prob(r=r, delta_t=T/N, sigma=sigma)
+  tree <- Arbol(S=S, sigma=sigma, delta_t=T/N, N=N)
+  option <- value_binomial_option(tree, sigma=sigma, delta_t=T/N, r=r, X=X, type=type)
+  return(list(q=q, stock=tree, option=option, price=option[1,1]))
+}
+
+results <- binomial_option(type='call', sigma=0.15, T=1, r=0.1, X=100, S=110, N=5)
+results
+
+```
+
+### Modelos de clasificación y regresion
+
+Para la aplicacion de modelos de clasificacion se va a usar el paquete tidymodels. Este paquete ofrece un marco de trabajo especifico para el entrenamiento y despliegue de modelos predictivos y de clasificacion. Para realizar las pruebas de clasificacion se usará una base de datos de riesgo de credito en formato CSV. [Datos](https://raw.githubusercontent.com/aparra3020/data_for_classification/main/clasi_lr.csv)
+
+```{r librerias tidymodels, message=FALSE, warning=FALSE, results="hide"}
+#librerias necesarias
+library(tidymodels)
+library(readr)
+library(modeltime)
+```
+```{r data }
+#Importamos la data
+url = "https://raw.githubusercontent.com/aparra3020/data_for_classification/main/clasi_lr.csv"
+data <- read_delim(url, delim = ";", escape_double = FALSE, 
+                   #Es necesario especificar algunas columnas como texto ya que son categoricas
+                       col_types = cols(RIESGO = col_character(), 
+                                        DESTINOCREDITO = col_character(), 
+                                        SITUACIONLABORAL = col_character(), 
+                                        ESTADOCIVIL = col_character(), 
+                                        SEXO = col_character(), 
+                                        CODEUDOR = col_character(), 
+                                        CASAPROPIA = col_character(), 
+                                        ESTRATO = col_character()), 
+                                        trim_ws = TRUE)
+
+#visualizamos la data 
+data
+
+#Como se puede observar la data cuenta con variables categoricas y continuas. Para realizar un mejor modelo se recomienda estandarizar o normalizar las variables continuas para que su diferencia de rangos no influya en el entrenamiento del modelo. Asi mismo nos interesa tomar las variables categoricas como factores y no como texto. Ya que estos almacen los datos como categorias unicas. 
+
+
+# Transformacion de variable objetivo de texto a factor 
+data = data %>% mutate(RIESGO = factor(RIESGO))
+
+#Repartimos la data en un set de entrenamiento y uno de entrenamiento.
+
+#80% de la data para entrenamiento y 20% para testeo
+data_split = initial_split(data, prop = 8/10)
+#Asignacion de la data
+train_data = training(data_split)
+test_data = testing(data_split)
+
+
+#Para realizar el procedimiento de transformacion de la data usamos el paquete recipes previamente cargado en el paquete tidymodels. Una receta es un procedimiento previo para preparar la informacion para el uso de modelos. 
+
+#creamos la receta con la funcion recipe y especificamos las variables independientes y dependientes
+#las variables dependientes van a la izquierda del simbolo ~ y las independientes a la derecha. Se pueden especificar que variables hacen parte del modelo o incluir todas con '.'.
+
+receta = recipe(RIESGO ~ ., data = train_data) %>% 
+#Convertimos todos las variables independientes nominales ('texto') a factores
+  step_string2factor(all_nominal_predictors()) %>% 
+#Normalizamos todas las variables dependientes continuas
+  step_center(all_numeric_predictors()) %>% 
+  step_scale(all_numeric_predictors())
+
+
+```
+
+
+Con la receta lista y la data cargada estamos listos para aplicar los diferentes modelos de clasificacion y escoger el más acertado.
+
+
+### Modelo Logit (logistic Regression)
+
+Para el modelo logit usaremos el paquete parsnip incluido en el paquete tidymodels. Asi mismo usaremos el paquete workflow para integrar el modelo con la receta previamente creada.
+
+```{r logistic regresion}
+#cargamos el modelo
+log_reg = logistic_reg()
+log_reg
+#entrenamos el modelo
+log_model = workflow() %>% add_model(log_reg) %>% add_recipe(receta) %>% 
+  fit(data = train_data)
+
+#Resultados del modelo 
+log_model %>% extract_fit_engine()
+
+#Probamos el modelo
+
+#Usamos el modelo para predecir la data de testeo
+class_aug = augment(log_model, test_data)
+class_aug$.pred_class
+
+#calculamos la precision del modelo
+class_aug %>% roc_auc(truth = RIESGO, .pred_0)
+
+#matriz de confusion 
+cm = class_aug %>% conf_mat(RIESGO, .pred_class)
+autoplot(cm, type = "heatmap")
+
+```
+
+### Modelo Decision tree
+
+Para el modelo de decision tree esta disponible con la libreria de parsnip y usamos la data y recete previamente diseñada
+
+```{r decision tree}
+#cargamos el modelo 
+tree = decision_tree(mode = "classification")
+tree
+
+tree_model = workflow() %>% add_model(tree) %>% add_recipe(receta) %>% 
+  fit(data = train_data)
+
+#Resultados del modelo 
+tree_model %>% extract_fit_engine()
+
+#Probamos el modelo
+
+#Usamos el modelo para predecir la data de testeo
+class_aug = augment(tree_model, test_data)
+class_aug$.pred_class
+
+#calculamos la precision del modelo
+class_aug %>% roc_auc(truth = RIESGO, .pred_0)
+
+#matriz de confusion 
+cm = class_aug %>% conf_mat(RIESGO, .pred_class)
+autoplot(cm, type = "heatmap")
+
+```
+
+### Modelo LDA (linear discriminant analysis)
+
+Para el modelo LDA se requiere de la libreria discrim la cual contiene el motor del modelo.
+```{r discrim, message=FALSE, warning=FALSE, results="hide"}
+library(discrim)
+```
+
+
+```{r modelo LDA}
+#cargamos del modelo
+lda = discrim_linear()
+lda
+
+lda_model = workflow() %>% add_model(lda) %>% add_recipe(receta) %>% 
+  fit(data = train_data)
+
+#Resultados del modelo 
+lda_model %>% extract_fit_engine()
+
+#Probamos el modelo
+
+#Usamos el modelo para predecir la data de testeo
+class_aug = augment(lda_model, test_data)
+class_aug$.pred_class
+
+#calculamos la precision del modelo
+class_aug %>% roc_auc(truth = RIESGO, .pred_0)
+
+#matriz de confusion 
+cm = class_aug %>% conf_mat(RIESGO, .pred_class)
+autoplot(cm, type = "heatmap")
+
+```
+
+### Modelo SVM (Support vector machine)
+
+El modelo SVM es un modelo que esta disponible en el paquete parsnip y requiere el paquete kernlab. Sirve principalmente para clasificacion y para reduccion de dimensiones
+
+```{r kernlab, message=FALSE, warning=FALSE, results="hide"}
+library(kernlab)
+```
+
+
+```{r svm}
+#cargamos del modelo
+svm = svm_rbf(mode = "classification")
+svm
+
+svm_model = workflow() %>% add_model(svm) %>% add_recipe(receta) %>% 
+  fit(data = train_data)
+
+#Resultados del modelo 
+svm_model %>% extract_fit_engine()
+
+#Probamos el modelo
+
+#Usamos el modelo para predecir la data de testeo
+class_aug = augment(svm_model, test_data)
+class_aug$.pred_class
+
+
+#calculamos la precision del modelo
+class_aug %>% roc_auc(truth = RIESGO, .pred_0)
+
+#matriz de confusion 
+cm = class_aug %>% conf_mat(RIESGO, .pred_class)
+autoplot(cm, type = "heatmap")
+
+
+```
+
+Finalmente para seleccionar el modelo podemos escoger el que tenga mejor desempeño en las metricas de evaluación. Hay diversos metodos de evaluación como R^2, Auc, RMSE, entre otros.
+
+### Ajuste de hiperparametros
+
+Cada modelo aplicable tiene sus propios parametros a definir al momento de definir el motor de procesamiento del modelo. Cuando se aplica un modelo sin definir los parametros opcionales, este toma valor por default predefinidos en el modelo. Para tener una mayor efectividad de los modelos, es recomendable el ajuste de hiperparametros. Esto se puede realizar con un grid de tuneo.
+
+```{r grid}
+
+#Tuneo de arbol de decision 
+
+#Definimos los parametros con tune() para hacerlos modificables 
+tree_tune = decision_tree(tree_depth = tune(), min_n = tune()) %>% 
+  set_mode("classification") %>% set_engine("rpart")
+tree_tune
+
+#Para tunear necesitamos crear más informacion de prueba para esto se usa la funcion vfolds_cv o boostraps
+
+#vfolds_cv ejecuta cross validation, es decir divida la data existente en grupos aleatorios de testeo y prueba
+#boostraps crea multiples copias de la misma data con valores aleatorios adicionales duplicados
+
+set.seed(100) #Para obtener resultados replicables
+train_data_cv = vfold_cv(train_data)
+
+#añadimos el grid
+tree_tuned = workflow() %>% add_model(tree_tune) %>% 
+  add_recipe(receta) %>% tune_grid(resamples = train_data_cv)
+
+#Recogemos los resultados obtenidos
+tree_tuned %>% collect_metrics() %>% select(-n, -.config)
+
+#filtramos las mejores 5 configuracion para el arbol de decisiones
+tree_tuned %>% show_best("roc_auc") %>% select(-n, -.config)
+
+
+```
+## Simulacion de Montecarlo
+
+### test de distribucion
+
+Una simulacion de montecarlo es un proceso de generacion de valores aleatorios para simular el comportamiento esperado de una variable especifica. Para realizar una simulacion efectiva, es necesario conocer la distribucion de los datos disponibles. Ya que la generacion de los valores aleatorios en R esta condicionada a parametros de alguna de las distribucion disponibles.
+
+Para realizar los test de distribucion se usará el paquete fitdistrplus y el paquete broom para resumir los resultados en un formato comparable.
+
+```{r test distribuciones}
+
+#data de prueba
+#distribucion gamma
+
+gamma.example = rgamma(n = 1000, shape = 6, rate = 10)
+
+
+#Este proceso es una funcion para modificar el resultado presentado por la funcion tidy()
+tidy.fitdist <- function(x, ...){
+  
+#Reunir los resultados de estimaciones en un dataframe unico
+  e1 <- tibble(
+    term = names(x$estimate),
+    estimate = unname(x$estimate),
+    std.error = unname(x$sd)
+  )
+#Reunir los resultados de los indicadores determinantes de la acertividad de las distribuciones   
+  e2 <- tibble(
+    term = c("loglik", "aic", "bic"),
+    value = c(unname(x$loglik), unname(x$aic), unname(x$bic))
+  )
+#Adjuntar los dataframes en una lista  
+  list(e1, e2)
+}
+
+#Funcion principal para realizar los tests
+distr_test = function(x){
+  
+  #creamos una lista vacia para almacenar los resultados  
+  distributions = list()
+  
+  #aplicamos los test  con la funcion fitdist especificando la distribucion a comprobar
+  #almacenamos los resultados en la lista creada previamente 
+  distributions$normal = tryCatch( expr = {fitdist(x, distr = "norm")},
+                                   error = function(e){NA})
+  distributions$beta = tryCatch( expr = {fitdist(x, distr = "beta")},
+                                 error = function(e){NA})
+  distributions$weibull = tryCatch( expr = {fitdist(x, distr = "weibull")},
+                                    error = function(e){NA})
+  distributions$gamma = tryCatch( expr = {fitdist(x, distr = "gamma")},
+                                  error = function(e){NA})
+  distributions$lognormal = tryCatch( expr = {fitdist(x, distr = "lnorm")},
+                                      error = function(e){NA})
+  distributions$cauchy = tryCatch( expr = {fitdist(x, distr = "cauchy")},
+                                   error = function(e){NA})
+  distributions$expl = tryCatch( expr = {fitdist(x, distr = "exp")},
+                                 error = function(e){NA})
+  distributions$uniform = tryCatch( expr = {fitdist(x, distr = "unif")},
+                                    error = function(e){NA})
+  distributions$logis = tryCatch( expr = {fitdist(x, distr = "logis")},
+                                  error = function(e){NA})
+  distributions$loglogis = tryCatch( expr = {fitdist(x, distr = "llogis")},
+                                     error = function(e){NA})
+  distributions$inv_weibull = tryCatch( expr = {fitdist(x, distr = "invweibull")},
+                                        error = function(e){NA})
+  distributions$inv_gamma = tryCatch( expr = {fitdist(x, distr = "invgamma")},
+                                      error = function(e){NA})
+  
+  distributions = distributions[!is.na(distributions)]
+  #usamos la funcion lapply para aplicar funciones y operaciones a todos los elementos de la lista
+  distributions = lapply(distributions, function(x){
+    #Adicionamos la clase fitdist a las pruebas para poder aplicar la funcion tidy()
+    class(x)  <- c("fitdist", "fitdistr")
+    #Aplicamos la funcion tidy previamente modificada
+    tidy(x)
+  })
+  
+  #transformamos la lista a dataframe para un mejor manipulacion de datos
+  z = as_tibble(distributions) %>% 
+    #Adjuntamos los nombres de las pruebas en una columna y los resultados en otra
+    pivot_longer(cols = everything(), names_to = "prueba", values_to = "test") %>%
+    #separamos la lista de resultados en una tabla
+    unnest_longer(test) 
+  
+  #Redefinimos z para almacenar los nombres y los resultados en una tabla unica
+  z = tibble(prueba = z$prueba, z$test) %>% 
+    #filtramos los resultados de los indicadores de acertividad de la distribucion
+    filter(term %in% c("aic", "loglik", "bic")) %>%
+    #separamos los resultados para presentarlos cada uno en una columna individual
+    pivot_wider(names_from = term, values_from = value) %>% 
+    #eliminamos las columnas referentes a las estimaciones 
+    select(-c(estimate,std.error)) %>% 
+    #ordenamos la tabla en orden ascendente por el indicador de Aikake
+    arrange(aic)
+  
+  
+  #Para añadir las estimaciones guardamos nuevamente la informacion en una variable 
+  y = as_tibble(distributions) %>% 
+    pivot_longer(cols = everything(), names_to = "prueba", values_to = "test") %>% 
+    #filtramos los resultados de las estimaciones 
+    slice_head(n=nrow(z)) 
+  
+  #unimos la tabla de variable Z con los resultados de los indicadores con la variable y
+  #la variable y contiene los resultados de las estimaciones de los parametros para cada
+  #distribucion individual. Cada una tiene parametros totalmente distintos.
+  z= z %>% left_join(y = y)
+  
+  #regresamos la tabla final 
+  return(z)
+}
+  #probamos la funcion 
+  test = distr_test(gamma.example)
+  test
+  #para acceder a las estimaciones podemos usar coordenadas 
+  #fila 1, columna 5
+  test[[1,5]]
+
+  #podemos revisar visualmente de la mejor distribucion con la funcion plot
+  
+  plot(fitdist(gamma.example, "gamma"))
+  
+  #podemos apreciar que el resultado de los parametros es similar a los dados en la generacion de numeros aleatorios
+  
+
+```
+
+La funcion creada para analizar el tipo de distribución funciona unicamente para distribuciones continuas. Para distribuccion discretas es necesario usar la funcion de fitdist con cada una de las opciones disponibles (poisson, binomial negativa, etc.)
+
+### Generacion de numeros aleatorios
+
+Para la generacion de numeros aleatorios disponemos de las funciones r[distributions] contenidas en el paquete stats pre instalado en R. Algunas de las distribuciones disponibles son:
+
+
+![**Distribuciones r stats**](C:\Users\pipep\OneDrive\Pictures\distributions.PNG)
+
+```{r generacion de numeros aleatorios}
+
+#Generacion de numeros aleatorios 
+
+#distribucion normal
+rnorm(n = 10, mean = 10, sd = 3)
+
+#distribucion lognormal
+rlnorm(n = 10, meanlog = 10, sdlog = 3)
+
+#distribucion weibull
+rweibull(n = 10, shape = 10, scale = 3)
+
+#distribucion gamma
+rgamma(n = 10, shape = 10, rate = 3)
+
+#distribucion exponencial
+rexp(n = 10, rate = 3)
+
+
+#Todas las distribuciones probadas en la funcion de comprobacion esta disponible para generacion numeros aleatorios
+```
+
+
+### Simulacion de montecarlo para valor en riesgo de la accion de Apple
+
+```{r simulacion de montecarlo}
+
+#Descargamos la data de Apple
+AAPL = tq_get("AAPL", from = "2021-01-01", to = "2022-05-18" )
+
+#calculamos los retornos diarios
+AAPLr = AAPL %>% select(date, adjusted) %>% 
+  tq_transmute(select = adjusted, mutate_fun = ROC, col_rename = "Returns") %>% 
+  na.omit()
+
+#aplicamos el test de distribucion (debido a la naturaleza de los datos no todas las distribuciones son aptas. Las distribuciones no aptas son descartadas)
+test = distr_test(AAPLr$Returns)
+
+#revisamos el resultado del test (Las mejores distribuciones son la logistica y la normal)
+test
+
+#obtenemos los resultados del mejor resultado del test
+values = test[[1,5]][[1]]
+
+#revisamos los parametros
+values
+
+#realizamos la simulacion de la distribucion logistica
+simulacion = rlogis(n = 10000, location = values$estimate[1], 
+                    scale = values$estimate[2])
+
+#Obtenemos el cuantil 5%
+cuantil = quantile(simulacion, 0.05)
+
+#Con un 95% de confianza se estima que el precio de la accion apple podria disminuir en el rendimiento encontrado en un día. (El resultado estimado es un rendimiento logaritmico diario)
+cuantil 
+
+
+#Rendimiento esperado para el siguiente día de la acción
+mean(simulacion)
+```
+## Modelos Arch y Garch para volatilidad
+
+Los modelos Arch y Garch son modelos estadisticos usados principalmente para el pronostico de volatilidad de series de tiempo. Se basan principalmente en una auto regresion que tiene en cuenta ciertas condiciones segun los patrones que tenga historicamente.
+
+
+```{r modelos arch}
+library(fGarch)
+library(timetk)
+#para realizar los procesos de los modelos de ARCH y GARCH se necesita tener los datos en formato de serie de tiempo para esto podemos usar el paquete time tk
+
+#transformacion de los rendimientos a series de tiempo
+AAPL_xts = AAPLr %>% tk_xts()
+
+#Observamos la data para determinar cuantos periodos de lagueo queremos asignar en el modelo
+acf(AAPL_xts)
+
+#Dividimos los datos, en dos sets de datos para realizar entrenamiento y prueba
+round(length(AAPL_xts)/10)
+
+training = head(AAPL_xts,310)
+testing = tail(AAPL_xts, 35)
+
+#Entrenamos el modelo
+arch.fit = garchFit(~garch(1,1), data = training, trace = F)
+
+#Revisamos los resultados del modelo 
+summary(arch.fit)
+
+#Realizamos el pronostico de la volatilidad
+pronostico = predict(arch.fit, n.ahead = 10)
+
+#revisamos el pronostico
+pronostico
+
+
+
+```
+
